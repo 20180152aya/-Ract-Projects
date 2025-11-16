@@ -1,0 +1,8 @@
+.footer-icon {
+  margin: 0 8px;
+  transition: color 0.3s ease;
+}
+
+.footer-icon:hover {
+  color: #aaa;
+}

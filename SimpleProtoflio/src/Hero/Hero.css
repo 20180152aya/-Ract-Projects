@@ -1,0 +1,106 @@
+.hero-container {
+    background-image: url('../assets/update.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    height: 700px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 60px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow: hidden;
+}
+
+
+.hero-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(1px);
+    z-index: 1;
+}
+
+.content {
+    position: relative;
+    z-index: 2;
+    animation: fadeInUp 1.2s ease forwards;
+    text-align: center;
+}
+
+.content .h1 {
+    color: white;
+    font-size: 90px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 15px;
+    opacity: 0;
+    animation: slideDown 1.4s ease forwards;
+}
+
+
+.content .h6 {
+    color: #f0f0f0;
+    font-size: 26px;
+    margin-top: 10px;
+    font-weight: 400;
+    text-transform: uppercase;
+    opacity: 0;
+    animation: fadeIn 2s ease forwards;
+}
+
+.content .hero-button {
+    margin-top: 30px;
+    padding: 12px 28px;
+    font-size: 20px;
+    background-color: transparent;
+    color: white;
+    border: 2px solid white;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.4s ease;
+    letter-spacing: 1px;
+    backdrop-filter: blur(1px);
+}
+
+.content .hero-button:hover {
+    background: white;
+    color: black;
+    transform: translateY(-4px);
+}
+
+
+@keyframes fadeInUp {
+    0% { opacity: 0; transform: translateY(50px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideDown {
+    0% { transform: translateY(-40px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+@media(max-width: 768px) {
+    .content .h1 {
+        font-size: 55px;
+    }
+
+    .content .h6 {
+        font-size: 18px;
+    }
+
+    .content .hero-button {
+        font-size: 16px;
+        padding: 10px 20px;
+    }
+}
