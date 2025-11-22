@@ -22,7 +22,7 @@ function About() {
         full-stack developer.
       </p>
 
-      {/* زرار الـ CV */}
+
       <a
         href="/Aya-Hamed-CV.pdf"
         download
