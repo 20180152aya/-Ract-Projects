@@ -9,13 +9,18 @@ import "./Product.css";
 import { Link } from "react-router-dom";
 import Details from "./details";
 import "./Product.css";
-
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart } from "../store/slice/counter";
+import "../App.css";
 
 function Product() {
+  const dispatch = useDispatch();
   const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [total, setTotal] = useState(0);
   const limit = 12;
+  const theme = useSelector((state) => state.thema.mode);
+  const lang = useSelector((state) => state.language.lang);
 
   useEffect(() => {
     const skip = (currentPage - 1) * limit;
@@ -46,75 +51,97 @@ function Product() {
 
   return (
     <>
-      <Navn />
-      <Container className="py-5">
-        <div className="row">
-          {products.map((item) => (
-            <div className="col-lg-4 col-md-6 mb-4" key={item.id}>
-              <div className="product-card h-100 shadow-sm position-relative">
-                <span
-                  className={`badge-stock ${item.stock === 0 ? "out" : "in"}`}
-                >
-                  {item.stock === 0 ? "Out of Stock" : "In Stock"}
-                </span>
-                <Link to={`/Products/${item.id}`}>
-                  <img
-                    src={item.images[0]}
-                    alt={item.title}
-                    className="card-img-top"
-                    style={{ height: "200px", objectFit: "contain" }}
-                  />
-                </Link>
+      <div
+        className={theme === "dark" ? "dark-mode" : "light-mode"}
+        dir={lang === "ar" ? "rtl" : "ltr"}
+      >
+        <Navn />
 
-                <div className="card-body text-center">
-                  <h6 className="card-title">{item.title}</h6>
-                  <p className="text-muted mb-1">${item.price}</p>
-                  <div className="mb-2">{renderStars(item.rating)}</div>
-                  <Button
-                    variant="dark"
-                    size="sm"
-                    disabled={item.stock === 0}
-                    className="mb-3"
+        <Container className="py-5">
+          <div className="row ">
+            {products.map((item) => (
+              <div className="col-lg-4 col-md-6 mb-4" key={item.id}>
+                <div className="product-card h-100 shadow-sm position-relative">
+                  <span
+                    className={`badge-stock ${item.stock === 0 ? "out" : "in"}`}
                   >
-                    Add to Cart
-                  </Button>
+                    {item.stock === 0
+                      ? lang === "ar"
+                        ? "غير متوفر"
+                        : "Out of Stock"
+                      : lang === "ar"
+                      ? "متوفر"
+                      : "In Stock"}
+                  </span>
+
+                  <Link to={`/Products/${item.id}`}>
+                    <img
+                      src={item.images[0]}
+                      alt={item.title}
+                      className="card-img-top"
+                      style={{ height: "200px", objectFit: "contain" }}
+                    />
+                  </Link>
+
+                  <div className="card-body text-center lighCard">
+                    <h6 className="card-title">
+                      {lang === "ar" ? item.title_ar || item.title : item.title}
+                    </h6>
+
+                    <p className="text-muted mb-1">${item.price}</p>
+
+                    <div className="mb-2">{renderStars(item.rating)}</div>
+
+                    <Button
+                      variant="dark"
+                      size="sm"
+                      disabled={item.stock === 0}
+                      className="mb-3"
+                      onClick={() => dispatch(addToCart(item))}
+                    >
+                      {lang === "ar" ? "أضف إلى العربة" : "Add to Cart"}
+                    </Button>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
-        <div className="d-flex justify-content-center mt-4 gap-2 flex-wrap">
-          <Button
-            variant="dark"
-            disabled={currentPage === 1}
-            onClick={() => setCurrentPage(currentPage - 1)}
-          >
-            Previous
-          </Button>
+            ))}
+          </div>
 
-          {[...Array(totalPages)].map((_, index) => {
-            const page = index + 1;
-            return (
-              <Button
-                key={page}
-                variant={currentPage === page ? "dark" : "outline-dark"}
-                onClick={() => setCurrentPage(page)}
-              >
-                {page}
-              </Button>
-            );
-          })}
+ 
+          <div className="d-flex justify-content-center mt-4 gap-2 flex-wrap x">
+            <Button
+              variant="dark"
+              disabled={currentPage === 1}
+              onClick={() => setCurrentPage(currentPage - 1)}
+            >
+              {lang === "ar" ? "السابق" : "Previous"}
+            </Button>
 
-          <Button
-            variant="dark"
-            disabled={currentPage === totalPages}
-            onClick={() => setCurrentPage(currentPage + 1)}
-          >
-            Next
-          </Button>
-        </div>
-      </Container>
-      <Footer />
+            {[...Array(totalPages)].map((_, index) => {
+              const page = index + 1;
+              return (
+                <Button
+                  key={page}
+                  variant={currentPage === page ? "dark" : "outline-dark"}
+                  onClick={() => setCurrentPage(page)}
+                >
+                  {page}
+                </Button>
+              );
+            })}
+
+            <Button
+              variant="dark"
+              disabled={currentPage === totalPages}
+              onClick={() => setCurrentPage(currentPage + 1)}
+            >
+              {lang === "ar" ? "التالي" : "Next"}
+            </Button>
+          </div>
+        </Container>
+
+        <Footer />
+      </div>
     </>
   );
 }

@@ -6,8 +6,9 @@ import { Link } from "react-router";
 function Home() {
   return (
     <>
+    
       <Navn />
-      <div className="py-5 bg-light">
+      <div className="py-5">
         <Container className="text-center">
           <h1 className="mb-3">Welcome to Ecommerce</h1>
 

@@ -4,47 +4,90 @@ import Navbar from "react-bootstrap/Navbar";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import { Link } from "react-router-dom";
 import { FaShoppingCart } from "react-icons/fa";
+import { useSelector, useDispatch } from "react-redux";
+import { toggleTheme } from "../store/slice/them";
+import { toggleLang } from "../store/slice/languageSlice";
+import "../App.css";
 
-function Navn(){
-      return (
-    <Navbar expand="lg" className="bg-dark" data-bs-theme="dark">
-      <Container>
-        <Navbar.Brand as={Link} to="/">
-          Ecommerce
-        </Navbar.Brand>
+import "./nav.css";
+function Navn() {
+  const counter = useSelector((state) =>
+    state.cart.items.reduce((sum, item) => sum + item.quantity, 0)
+  );
+  const theme = useSelector((state) => state.thema.mode);
+  const lang = useSelector((state) => state.language.lang);
 
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+  const dispatch = useDispatch();
 
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto">
-            <Nav.Link as={Link} to="/">
-              Home
-            </Nav.Link>
-            <Nav.Link as={Link} to="/Products">
-              Products
-            </Nav.Link>
-          </Nav>
-          <Nav className="ms-auto d-flex align-items-center">
-            <Nav.Link as={Link} to="/Login">
-              Login
-            </Nav.Link>
-            <Nav.Link as={Link} to="/Register">
-              Register
-            </Nav.Link>
-            <Nav.Link
-              as={Link}
-              to="/Cart"
-              className="d-flex align-items-center"
+  return (
+    <div className={theme === "dark" ? "dark-mode" : "light-mode"}>
+      <Navbar
+        expand="lg"
+        dir={lang === "ar" ? "rtl" : "ltr"}
+        className={theme === "dark" ? "bg-dark navbar-dark" : "bg-primary"}
+      >
+        <Container>
+          <Navbar.Brand as={Link} to="/">
+            {lang === "ar" ? "المتجر الإلكتروني" : "Ecommerce"}
+          </Navbar.Brand>
+
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className={lang === "ar" ? "ms-auto" : "me-auto"}>
+              <Nav.Link as={Link} to="/">
+                {lang === "ar" ? "الرئيسية" : "Home"}
+              </Nav.Link>
+
+              <Nav.Link as={Link} to="/Products">
+                {lang === "ar" ? "المنتجات" : "Products"}
+              </Nav.Link>
+              <Nav.Link as={Link} to="/Register">
+                {lang === "ar" ? "تسجيل الدخول" : "Register"}
+              </Nav.Link>
+              <Nav.Link as={Link} to="/Contact">
+                {lang === "ar" ? " تواصل معنا" : "Contact Us"}
+              </Nav.Link>
+            </Nav>
+
+            <Nav
+              className={
+                lang === "ar"
+                  ? "me-auto d-flex align-items-center gap-3"
+                  : "ms-auto d-flex align-items-center gap-3"
+              }
             >
-              <FaShoppingCart
-                style={{ fontSize: "18px", marginRight: "4px" }}
-              />
-              Cart
-            </Nav.Link>
-          </Nav>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
+              <button
+                onClick={() => dispatch(toggleLang())}
+                className="btn btn-outline-light btn-sm"
+              >
+                {lang === "en" ? "AR" : "EN"}
+              </button>
+              <button
+                onClick={() => dispatch(toggleTheme())}
+                className="btn btn-outline-warning btn-sm"
+              >
+                {theme === "light" ? "🌙" : "☀️"}
+              </button>
+
+              <Nav.Link
+                as={Link}
+                to="/Cart"
+                className="d-flex align-items-center"
+              >
+                <FaShoppingCart
+                  style={{ fontSize: "18px", marginRight: "4px" }}
+                />
+                {lang === "ar" ? "السلة" : "Cart"}{" "}
+                <span className="badge bg-danger ms-1 text-white">
+                  {counter}
+                </span>
+              </Nav.Link>
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
+    </div>
   );
 }
 

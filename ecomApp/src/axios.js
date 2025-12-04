@@ -1,5 +1,5 @@
 import axios from "axios";
 
 export const instance = axios.create({
-  baseURL: "https://dummyjson.com/products", 
+  baseURL: import.meta.env.VITE_APP_BASE_URL, 
 });
